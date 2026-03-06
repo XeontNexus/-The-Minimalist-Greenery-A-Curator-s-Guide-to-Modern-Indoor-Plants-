@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - The Minimalist Greenery</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full space-y-8 p-8">
+        <div class="text-center">
+            <h1 class="text-3xl font-serif text-gray-800 mb-2">The Minimalist Greenery</h1>
+            <p class="text-gray-600">Login untuk melanjutkan</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <!-- Google Sign-In Button -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Login dengan Google</h3>
+                <div id="g_id_onload"
+                     data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                     data-callback="handleGoogleSignIn"
+                     data-auto_prompt="false">
+                </div>
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-shape="rectangular"
+                     data-theme="outline"
+                     data-text="signin_with"
+                     data-size="large"
+                     data-logo_alignment="left">
+                </div>
+            </div>
+
+            <div class="relative mb-6">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-300"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-white text-gray-500">atau</span>
+                </div>
+            </div>
+
+            <!-- Admin Login Form -->
+            <div id="admin-login">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Login Admin</h3>
+                <form onsubmit="handleAdminLogin(event)">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-semibold mb-2">Email Admin</label>
+                        <input type="email" id="admin-email" required 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                               placeholder="admin@minimalistgreenery.com">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 font-semibold mb-2">Password</label>
+                        <input type="password" id="admin-password" required 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                               placeholder="Masukkan password">
+                    </div>
+                    <button type="submit" class="w-full bg-green-700 text-white py-3 rounded-lg hover:bg-green-800 transition-colors">
+                        Login Admin
+                    </button>
+                </form>
+            </div>
+
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Belum punya akun? 
+                    <a href="#" onclick="showRegisterForm()" class="text-green-700 hover:text-green-800 font-semibold">Daftar</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Register Form (Hidden by default) -->
+        <div id="register-form" class="bg-white rounded-lg shadow-lg p-8 hidden">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Daftar Akun Baru</h3>
+            <form onsubmit="handleRegister(event)">
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">Nama Lengkap</label>
+                    <input type="text" id="register-name" required 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                           placeholder="Masukkan nama lengkap">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">Email</label>
+                    <input type="email" id="register-email" required 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                           placeholder="Masukkan email">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-semibold mb-2">Password</label>
+                    <input type="password" id="register-password" required 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                           placeholder="Masukkan password">
+                </div>
+                <button type="submit" class="w-full bg-green-700 text-white py-3 rounded-lg hover:bg-green-800 transition-colors">
+                    Daftar
+                </button>
+            </form>
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Sudah punya akun? 
+                    <a href="#" onclick="showLoginForm()" class="text-green-700 hover:text-green-800 font-semibold">Login</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <a href="index.html" class="text-green-700 hover:text-green-800 font-semibold">
+                ← Kembali ke Website
+            </a>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>

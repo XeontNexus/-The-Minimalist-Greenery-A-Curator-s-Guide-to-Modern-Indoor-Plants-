@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&libraries=places&callback=initMap" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body class="bg-gray-50">
     <!-- Navigation -->
@@ -24,6 +25,34 @@
                         <a href="#anatomy" class="nav-link text-gray-700 hover:text-green-700 px-3 py-2 text-sm font-medium transition-colors">Anatomy</a>
                         <a href="#care-lab" class="nav-link text-gray-700 hover:text-green-700 px-3 py-2 text-sm font-medium transition-colors">Care Lab</a>
                         <a href="#shop" class="nav-link text-gray-700 hover:text-green-700 px-3 py-2 text-sm font-medium transition-colors">Shop</a>
+                    </div>
+                </div>
+                <!-- User Menu -->
+                <div class="flex items-center space-x-4">
+                    <div id="user-menu" class="hidden">
+                        <div class="flex items-center space-x-3">
+                            <span id="user-name" class="text-gray-700 text-sm"></span>
+                            <div class="relative">
+                                <button onclick="toggleUserDropdown()" class="flex items-center text-gray-700 hover:text-green-700">
+                                    <img id="user-avatar" src="" alt="User" class="w-8 h-8 rounded-full">
+                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                                    <a href="#" onclick="showProfile()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                                    <a href="#" onclick="showOrders()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Pesanan Saya</a>
+                                    <div id="admin-link" class="hidden">
+                                        <a href="admin.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Admin Dashboard</a>
+                                    </div>
+                                    <hr class="my-1">
+                                    <a href="#" onclick="logout()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="login-buttons">
+                        <a href="login.html" class="text-green-700 hover:text-green-800 font-medium">Login</a>
                     </div>
                 </div>
                 <!-- Mobile menu button -->
@@ -412,6 +441,7 @@
         </div>
     </div>
 
+    <script src="auth.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

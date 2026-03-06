@@ -196,9 +196,99 @@ const plants = [
 // Comments Storage
 let comments = [];
 
-// Initialize
+// Initialize App
 document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
+    
+    // Initialize auth system
+    if (typeof authSystem !== 'undefined') {
+        updateAuthUI();
+    }
+});
+
+// Authentication UI Functions
+function updateAuthUI() {
+    const userMenu = document.getElementById('user-menu');
+    const loginButtons = document.getElementById('login-buttons');
+    const userName = document.getElementById('user-name');
+    const userAvatar = document.getElementById('user-avatar');
+    const adminLink = document.getElementById('admin-link');
+
+    if (authSystem.isLoggedIn()) {
+        const user = authSystem.getCurrentUser();
+        
+        // Show user menu
+        userMenu.classList.remove('hidden');
+        loginButtons.classList.add('hidden');
+        
+        // Update user info
+        userName.textContent = user.name;
+        if (user.picture) {
+            userAvatar.src = user.picture;
+            userAvatar.classList.remove('hidden');
+        } else {
+            userAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=4A5D4E&color=fff`;
+        }
+        
+        // Show admin link if admin
+        if (authSystem.isAdmin()) {
+            adminLink.classList.remove('hidden');
+        }
+        
+        // Check for pending purchase
+        const pendingPurchase = sessionStorage.getItem('pending-purchase');
+        if (pendingPurchase) {
+            const purchaseData = JSON.parse(pendingPurchase);
+            // Pre-fill purchase form with pending data
+            setTimeout(() => {
+                if (document.getElementById('purchase-email')) {
+                    document.getElementById('purchase-email').value = purchaseData.email || '';
+                    document.getElementById('purchase-phone').value = purchaseData.phone || '';
+                    document.getElementById('purchase-name').value = purchaseData.name || '';
+                    document.getElementById('purchase-address').value = purchaseData.address || '';
+                    document.getElementById('purchase-city').value = purchaseData.city || '';
+                    document.getElementById('purchase-postal').value = purchaseData.postal || '';
+                    document.getElementById('purchase-notes').value = purchaseData.notes || '';
+                }
+            }, 500);
+            sessionStorage.removeItem('pending-purchase');
+        }
+    } else {
+        // Show login button
+        userMenu.classList.add('hidden');
+        loginButtons.classList.remove('hidden');
+    }
+}
+
+function toggleUserDropdown() {
+    const dropdown = document.getElementById('user-dropdown');
+    dropdown.classList.toggle('hidden');
+}
+
+function logout() {
+    if (authSystem) {
+        authSystem.logout();
+    }
+}
+
+function showProfile() {
+    // Placeholder for profile functionality
+    alert('Profile page coming soon!');
+}
+
+function showOrders() {
+    // Placeholder for user orders
+    alert('Your orders page coming soon!');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('user-dropdown');
+    const userMenu = document.getElementById('user-menu');
+    
+    if (!userMenu.contains(event.target)) {
+        dropdown.classList.add('hidden');
+    }
 });
 
 function initializeApp() {
@@ -535,6 +625,30 @@ function closePurchaseModal() {
 function completePurchase(event) {
     event.preventDefault();
     
+    // Check if user is logged in
+    if (!authSystem || !authSystem.isLoggedIn()) {
+        // Store purchase data and redirect to login
+        const purchaseData = {
+            plant: document.getElementById('purchase-item').textContent.replace('Anda akan membeli: ', ''),
+            email: document.getElementById('purchase-email').value,
+            phone: document.getElementById('purchase-phone').value,
+            name: document.getElementById('purchase-name').value,
+            address: document.getElementById('purchase-address').value,
+            city: document.getElementById('purchase-city').value,
+            postal: document.getElementById('purchase-postal').value,
+            notes: document.getElementById('purchase-notes').value
+        };
+        
+        sessionStorage.setItem('pending-purchase', JSON.stringify(purchaseData));
+        sessionStorage.setItem('redirect-after-login', window.location.href);
+        
+        showErrorMessage('Silakan login terlebih dahulu untuk melanjutkan pembelian.');
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 2000);
+        return;
+    }
+    
     const email = document.getElementById('purchase-email').value;
     const phone = document.getElementById('purchase-phone').value;
     const name = document.getElementById('purchase-name').value;
@@ -550,7 +664,8 @@ function completePurchase(event) {
         return;
     }
     
-    // Create order object
+    // Create order object with user info
+    const currentUser = authSystem.getCurrentUser();
     const orderData = {
         plant: plantName,
         customer: {
@@ -560,7 +675,8 @@ function completePurchase(event) {
             address: address,
             city: city,
             postalCode: postal,
-            notes: notes
+            notes: notes,
+            userId: currentUser.id
         },
         timestamp: new Date().toISOString()
     };
