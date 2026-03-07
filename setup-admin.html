@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Admin Account - The Minimalist Greenery</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full space-y-8 p-8">
+        <div class="text-center">
+            <h1 class="text-3xl font-serif text-gray-800 mb-2">The Minimalist Greenery</h1>
+            <p class="text-gray-600">Setup Akun Administrator</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <div class="mb-6">
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold text-yellow-800 mb-2">🔐 Security Notice</h3>
+                    <p class="text-yellow-700 text-sm">
+                        Halaman ini untuk setup awal akun admin. Setelah setup, halaman ini akan dinonaktifkan secara otomatis.
+                        Simpan credentials Anda dengan aman!
+                    </p>
+                </div>
+            </div>
+
+            <form onsubmit="setupAdmin(event)">
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">Email Admin</label>
+                    <input type="email" id="admin-email" required 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                           placeholder="admin@minimalistgreenery.com">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">Nama Lengkap</label>
+                    <input type="text" id="admin-name" required 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                           placeholder="Administrator">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-semibold mb-2">Password</label>
+                    <input type="password" id="admin-password" required 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                           placeholder="Masukkan password yang kuat">
+                    <div class="mt-2">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="show-password" onchange="togglePasswordVisibility()" class="mr-2">
+                            <label for="show-password" class="text-sm text-gray-600">Tampilkan password</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-semibold mb-2">Konfirmasi Password</label>
+                    <input type="password" id="admin-confirm-password" required 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                           placeholder="Masukkan ulang password">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-semibold mb-2">Security Question</label>
+                    <select id="security-question" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500">
+                        <option value="">Pilih pertanyaan keamanan...</option>
+                        <option value="pet">Nama hewan peliharaan pertama?</option>
+                        <option value="school">Nama sekolah dasar?</option>
+                        <option value="city">Kota kelahiran?</option>
+                        <option value="mother">Nama gadis ibu?</option>
+                    </select>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-semibold mb-2">Jawaban Security Question</label>
+                    <input type="text" id="security-answer" required 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                           placeholder="Jawaban pertanyaan keamanan">
+                </div>
+                <button type="submit" class="w-full bg-green-700 text-white py-3 rounded-lg hover:bg-green-800 transition-colors">
+                    Buat Akun Admin
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Sudah punya akun admin? 
+                    <a href="login.html" class="text-green-700 hover:text-green-800 font-semibold">Login</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <a href="index.html" class="text-green-700 hover:text-green-800 font-semibold">
+                ← Kembali ke Website
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function togglePasswordVisibility() {
+            const password = document.getElementById('admin-password');
+            const confirmPassword = document.getElementById('admin-confirm-password');
+            const showPassword = document.getElementById('show-password').checked;
+            
+            password.type = showPassword ? 'text' : 'password';
+            confirmPassword.type = showPassword ? 'text' : 'password';
+        }
+
+        function setupAdmin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('admin-email').value;
+            const name = document.getElementById('admin-name').value;
+            const password = document.getElementById('admin-password').value;
+            const confirmPassword = document.getElementById('admin-confirm-password').value;
+            const securityQuestion = document.getElementById('security-question').value;
+            const securityAnswer = document.getElementById('security-answer').value;
+
+            // Validations
+            if (!email || !name || !password || !confirmPassword || !securityQuestion || !securityAnswer) {
+                alert('Mohon lengkapi semua field!');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Password dan konfirmasi password tidak cocok!');
+                return;
+            }
+
+            if (password.length < 8) {
+                alert('Password minimal 8 karakter!');
+                return;
+            }
+
+            // Check if admin already exists
+            const existingUsers = JSON.parse(localStorage.getItem('minimalist-greenery-users') || '[]');
+            const existingAdmin = existingUsers.find(user => user.role === 'admin');
+            
+            if (existingAdmin) {
+                alert('Akun admin sudah ada! Gunakan halaman login.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Create admin user
+            const adminUser = {
+                id: 'admin_' + Date.now(),
+                email: email,
+                name: name,
+                role: 'admin',
+                provider: 'local',
+                password: btoa(password), // Simple encoding (use proper hashing in production)
+                securityQuestion: securityQuestion,
+                securityAnswer: btoa(securityAnswer),
+                createdAt: new Date().toISOString()
+            };
+
+            // Save admin user
+            existingUsers.push(adminUser);
+            localStorage.setItem('minimalist-greenery-users', JSON.stringify(existingUsers));
+
+            // Show success message
+            alert('Akun admin berhasil dibuat! Silakan login.');
+
+            // Redirect to login
+            window.location.href = 'login.html';
+        }
+
+        // Check if admin already exists on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const existingUsers = JSON.parse(localStorage.getItem('minimalist-greenery-users') || '[]');
+            const existingAdmin = existingUsers.find(user => user.role === 'admin');
+            
+            if (existingAdmin) {
+                alert('Akun admin sudah ada! Anda akan dialihkan ke halaman login.');
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html>
